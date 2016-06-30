@@ -854,7 +854,7 @@ TESTDLL_NKJ void GrowVesselUsingFastMarching(cv::Mat ivessel, std::vector<cv::Po
 
 		//[T, S] = perform_fast_marching(ivessel, SourcePoint);
 
-		cv::Mat tmp(nY, nX, CV_8UC1);
+		cv::Mat tmp = cv::Mat::zeros(nY, nX, CV_8UC1);
 		for (int i = 0; i < SourcePoint.size(); i++)
 			tmp.at<uchar>(SourcePoint[i]) = 255;
 
