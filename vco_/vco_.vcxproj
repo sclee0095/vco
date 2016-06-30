@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FBF6AE53-7F7B-4520-8879-FBE13051CDC9}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>vco_</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>..\opencv_ectracted_lib2\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)\bin\</OutDir>
+    <TargetName>vcod</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>..\opencv_ectracted_lib2\include;$(IncludePath)</IncludePath>
+    <TargetName>vco64d</TargetName>
+    <OutDir>$(SolutionDir)\bin\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>..\opencv_ectracted_lib2\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)\bin\</OutDir>
+    <TargetName>vco</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>..\opencv_ectracted_lib2\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)\bin\</OutDir>
+    <TargetName>vco64</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>CVAPI_EXPORTS;WIN32;_DEBUG;_WINDOWS;_USRDLL;VCO__EXPORTS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;VCO__EXPORTS;CVAPI_EXPORTS;BUILD_SHARED_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>CVAPI_EXPORTS;WIN32;NDEBUG;_WINDOWS;_USRDLL;VCO__EXPORTS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;VCO__EXPORTS;CVAPI_EXPORTS;BUILD_SHARED_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="cChamferMatching.h" />
+    <ClInclude Include="cFastMarching.h" />
+    <ClInclude Include="cFrangiFilter.h" />
+    <ClInclude Include="cGeodesic.h" />
+    <ClInclude Include="cMRF.h" />
+    <ClInclude Include="cP2pMatching.h" />
+    <ClInclude Include="cParam.h" />
+    <ClInclude Include="frangi\frangi.h" />
+    <ClInclude Include="make_dll.h" />
+    <ClInclude Include="std_include.h" />
+    <ClInclude Include="TRW_S-v1.3\instances.h" />
+    <ClInclude Include="TRW_S-v1.3\MRFEnergy.h" />
+    <ClInclude Include="TRW_S-v1.3\typeBinary.h" />
+    <ClInclude Include="TRW_S-v1.3\typeBinaryFast.h" />
+    <ClInclude Include="TRW_S-v1.3\typeGeneral.h" />
+    <ClInclude Include="TRW_S-v1.3\typePotts.h" />
+    <ClInclude Include="TRW_S-v1.3\typeTruncatedLinear.h" />
+    <ClInclude Include="TRW_S-v1.3\typeTruncatedLinear2D.h" />
+    <ClInclude Include="TRW_S-v1.3\typeTruncatedQuadratic.h" />
+    <ClInclude Include="TRW_S-v1.3\typeTruncatedQuadratic2D.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\bagofwords.cpp" />
+    <ClCompile Include="cChamferMatching.cpp" />
+    <ClCompile Include="cFastMarching.cpp" />
+    <ClCompile Include="cFrangiFilter.cpp" />
+    <ClCompile Include="cGeodesic.cpp" />
+    <ClCompile Include="cMRF.cpp" />
+    <ClCompile Include="cP2pMatching.cpp" />
+    <ClCompile Include="cParam.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\adler32.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\bitstrm.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\codec\grfmt_base.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\codec\grfmt_bmp.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\codec\grfmt_png.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\codec\utils.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\color.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\compress.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\connectedcomponents.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\crc32.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\deflate.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\demosaicing.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\drawing.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\fast.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\fast_score.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\feature2d.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\filter.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\gzclose.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\gzlib.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\gzread.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\gzwrite.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\hershey_fonts.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\imgwarp.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\infback.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\inffast.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\inflate.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\inftrees.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\keypoint.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\loadsave.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\png.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngerror.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngget.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngmem.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngpread.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngread.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngrio.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngrtran.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngrutil.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngset.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngtrans.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngwio.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngwrite.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngwtran.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngwutil.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\matchers.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\miniflann.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\morph.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\opencl_kernels_core.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\opencl_kernels_imgproc.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\orb.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\smooth.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\algorithm.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\alloc.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\arithm.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\array.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\command_line_parser.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\conjugate_gradient.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\convert.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\copy.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\cuda_gpu_mat.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\cuda_host_mem.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\cuda_info.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\cuda_stream.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\datastructs.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\directx.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\distransform.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\downhill_simplex.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\draw.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\dxt.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\glob.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\gl_core_3_1.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\kmeans.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\lapack.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\lda.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\lpsolver.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\mathfuncs.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\mathfuncs_core.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\matmul.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\matop.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\matrix.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\matrix_decomp.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\merge.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\ocl.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\opengl.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\out.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\parallel.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\parallel_pthreads.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\pca.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\persistence.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\rand.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\split.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\stat.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\stl.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\system.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\tables_core.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\types.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\umatrix.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\va_intel.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\sumpixels.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\tables_imgproc.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\templmatch.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\thresh.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\trees.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\uncompr.c" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\window.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\window_w32.cpp" />
+    <ClCompile Include="..\opencv_ectracted_lib2\src\zutil.c" />
+    <ClCompile Include="fast_marching2\fheap\fib.cpp" />
+    <ClCompile Include="fast_marching2\perform_front_propagation_2d_addpd.cpp" />
+    <ClCompile Include="frangi\frangi.cpp" />
+    <ClCompile Include="make_dll.cpp" />
+    <ClCompile Include="mrfMinimizeMex_syshin.cpp" />
+    <ClCompile Include="TRW_S-v1.3\minimize.cpp" />
+    <ClCompile Include="TRW_S-v1.3\MRFEnergy.cpp" />
+    <ClCompile Include="TRW_S-v1.3\ordering.cpp" />
+    <ClCompile Include="TRW_S-v1.3\treeProbabilities.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

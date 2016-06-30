@@ -1,0 +1,465 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="opencv">
+      <UniqueIdentifier>{a0d3080e-2de6-4f4c-af07-2b886108aac5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FMM">
+      <UniqueIdentifier>{da545082-69b7-4662-ae73-253add18550c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TRW-S">
+      <UniqueIdentifier>{75291e5e-8a58-4e13-b651-81397ce50dc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Frangi">
+      <UniqueIdentifier>{0d974f82-6271-4070-aab6-cb79356b70a3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="std_include.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cChamferMatching.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cFastMarching.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cFrangiFilter.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cGeodesic.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cMRF.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cParam.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="make_dll.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cP2pMatching.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TRW_S-v1.3\typeTruncatedLinear.h">
+      <Filter>TRW-S</Filter>
+    </ClInclude>
+    <ClInclude Include="TRW_S-v1.3\typeTruncatedLinear2D.h">
+      <Filter>TRW-S</Filter>
+    </ClInclude>
+    <ClInclude Include="TRW_S-v1.3\typeTruncatedQuadratic2D.h">
+      <Filter>TRW-S</Filter>
+    </ClInclude>
+    <ClInclude Include="TRW_S-v1.3\typeTruncatedQuadratic.h">
+      <Filter>TRW-S</Filter>
+    </ClInclude>
+    <ClInclude Include="TRW_S-v1.3\typeBinary.h">
+      <Filter>TRW-S</Filter>
+    </ClInclude>
+    <ClInclude Include="TRW_S-v1.3\typeBinaryFast.h">
+      <Filter>TRW-S</Filter>
+    </ClInclude>
+    <ClInclude Include="TRW_S-v1.3\typeGeneral.h">
+      <Filter>TRW-S</Filter>
+    </ClInclude>
+    <ClInclude Include="TRW_S-v1.3\typePotts.h">
+      <Filter>TRW-S</Filter>
+    </ClInclude>
+    <ClInclude Include="TRW_S-v1.3\MRFEnergy.h">
+      <Filter>TRW-S</Filter>
+    </ClInclude>
+    <ClInclude Include="TRW_S-v1.3\instances.h">
+      <Filter>TRW-S</Filter>
+    </ClInclude>
+    <ClInclude Include="frangi\frangi.h">
+      <Filter>Frangi</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="mrfMinimizeMex_syshin.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cChamferMatching.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cFastMarching.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cFrangiFilter.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cGeodesic.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cMRF.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cParam.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="make_dll.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\adler32.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\bitstrm.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\codec\grfmt_base.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\codec\grfmt_bmp.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\codec\grfmt_png.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\codec\utils.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\color.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\compress.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\connectedcomponents.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\crc32.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\deflate.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\demosaicing.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\drawing.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\fast.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\fast_score.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\feature2d.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\filter.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\gzclose.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\gzlib.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\gzread.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\gzwrite.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\hershey_fonts.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\imgwarp.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\infback.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\inffast.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\inflate.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\inftrees.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\keypoint.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\loadsave.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\png.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngerror.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngget.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngmem.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngpread.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngread.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngrio.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngrtran.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngrutil.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngset.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngtrans.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngwio.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngwrite.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngwtran.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\loadsave\pngwutil.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\matchers.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\miniflann.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\morph.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\opencl_kernels_core.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\opencl_kernels_imgproc.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\orb.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\smooth.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\algorithm.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\alloc.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\arithm.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\array.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\command_line_parser.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\conjugate_gradient.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\convert.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\copy.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\cuda_gpu_mat.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\cuda_host_mem.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\cuda_info.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\cuda_stream.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\datastructs.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\directx.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\distransform.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\downhill_simplex.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\draw.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\dxt.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\glob.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\gl_core_3_1.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\kmeans.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\lapack.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\lda.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\lpsolver.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\mathfuncs.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\mathfuncs_core.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\matmul.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\matop.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\matrix_decomp.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\merge.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\ocl.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\opengl.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\out.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\parallel.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\parallel_pthreads.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\pca.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\persistence.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\rand.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\split.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\stat.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\stl.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\system.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\tables_core.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\types.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\umatrix.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\va_intel.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\sumpixels.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\tables_imgproc.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\templmatch.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\thresh.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\trees.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\uncompr.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\window.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\window_w32.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\zutil.c">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="cP2pMatching.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\src\matrix.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\opencv_ectracted_lib2\src\bagofwords.cpp">
+      <Filter>opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="TRW_S-v1.3\treeProbabilities.cpp">
+      <Filter>TRW-S</Filter>
+    </ClCompile>
+    <ClCompile Include="TRW_S-v1.3\MRFEnergy.cpp">
+      <Filter>TRW-S</Filter>
+    </ClCompile>
+    <ClCompile Include="TRW_S-v1.3\minimize.cpp">
+      <Filter>TRW-S</Filter>
+    </ClCompile>
+    <ClCompile Include="TRW_S-v1.3\ordering.cpp">
+      <Filter>TRW-S</Filter>
+    </ClCompile>
+    <ClCompile Include="frangi\frangi.cpp">
+      <Filter>Frangi</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_marching2\fheap\fib.cpp">
+      <Filter>FMM</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_marching2\perform_front_propagation_2d_addpd.cpp">
+      <Filter>FMM</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
