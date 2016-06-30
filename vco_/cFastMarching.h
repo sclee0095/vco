@@ -52,7 +52,7 @@
 //#endif
 
 
-class cFastMarching
+class TESTDLL_NKJ cFastMarching
 {
 public:
 	cFastMarching();

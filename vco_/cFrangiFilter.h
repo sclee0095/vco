@@ -9,7 +9,7 @@
 
 
 
-class cFrangiFilter
+class TESTDLL_NKJ cFrangiFilter
 {
 public:
 	cFrangiFilter();

@@ -33,12 +33,6 @@
     <ClInclude Include="cChamferMatching.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="cFastMarching.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cFrangiFilter.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="cGeodesic.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -87,18 +81,18 @@
     <ClInclude Include="frangi\frangi.h">
       <Filter>Frangi</Filter>
     </ClInclude>
+    <ClInclude Include="cFastMarching.h">
+      <Filter>FMM</Filter>
+    </ClInclude>
+    <ClInclude Include="cFrangiFilter.h">
+      <Filter>Frangi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mrfMinimizeMex_syshin.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cChamferMatching.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cFastMarching.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cFrangiFilter.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cGeodesic.cpp">
@@ -460,6 +454,12 @@
     </ClCompile>
     <ClCompile Include="fast_marching2\perform_front_propagation_2d_addpd.cpp">
       <Filter>FMM</Filter>
+    </ClCompile>
+    <ClCompile Include="cFastMarching.cpp">
+      <Filter>FMM</Filter>
+    </ClCompile>
+    <ClCompile Include="cFrangiFilter.cpp">
+      <Filter>Frangi</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

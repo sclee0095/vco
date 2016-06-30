@@ -1,8 +1,10 @@
-#include <opencv2/opencv.hpp>
+#include "../std_include.h"
 
 
 //options for the filter
-typedef struct{
+class TESTDLL_NKJ frangi2d_opts_t
+{
+public:
 	//vessel scales
 	int sigma_start;
 	int sigma_end;
@@ -14,7 +16,7 @@ typedef struct{
 	float BetaTwo;
 
 	bool BlackWhite; //enhance black structures if true, otherwise enhance white structures
-} frangi2d_opts_t;
+};
 
 #define DEFAULT_SIGMA_START 3
 #define DEFAULT_SIGMA_END 7
@@ -29,7 +31,7 @@ typedef struct{
 /////////////////
 
 //apply full Frangi filter to src. Vesselness is saved in J, scale is saved to scale, vessel angle is saved to directions. 
-void frangi2d(const cv::Mat &src, cv::Mat &J, cv::Mat &scale, cv::Mat &directions, frangi2d_opts_t opts);
+TESTDLL_NKJ void frangi2d(const cv::Mat &src, cv::Mat &J, cv::Mat &scale, cv::Mat &directions, frangi2d_opts_t opts);
 
 
 
