@@ -25,6 +25,14 @@
 #include <algorithm>
 #include <functional>
 
+
+
+#ifdef VCOAPI_EXPORTS
+#define VCO_EXPORTS __declspec(dllexport)
+#else
+#define VCO_EXPORTS __declspec(dllimport)
+#endif
+
 //std::greater
 
 //#include "mex.h"

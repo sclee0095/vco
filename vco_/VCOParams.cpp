@@ -1,9 +1,8 @@
-#include "cParam.h"
+#include "VCOParams.h"
 
-
-cParam::cParam()
+cVCOParams::cVCOParams()
 {
-	use_gc = true;
+	use_global_chamfer = true;
 	//thre_ivessel = 0.05;
 	thre_ivessel = 0.05; //0.6
 	thre_dist_step1 = 50;
@@ -33,7 +32,6 @@ cParam::cParam()
 	pfrangi_BlackWhite = false;
 }
 
-
-cParam::~cParam()
+cVCOParams::~cVCOParams()
 {
 }

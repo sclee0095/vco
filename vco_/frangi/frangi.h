@@ -2,7 +2,7 @@
 
 
 //options for the filter
-class TESTDLL_NKJ frangi2d_opts_t
+class VCO_EXPORTS frangi2d_opts_t
 {
 public:
 	//vessel scales
@@ -31,7 +31,7 @@ public:
 /////////////////
 
 //apply full Frangi filter to src. Vesselness is saved in J, scale is saved to scale, vessel angle is saved to directions. 
-TESTDLL_NKJ void frangi2d(const cv::Mat &src, cv::Mat &J, cv::Mat &scale, cv::Mat &directions, frangi2d_opts_t opts);
+VCO_EXPORTS void frangi2d(const cv::Mat &src, cv::Mat &J, cv::Mat &scale, cv::Mat &directions, frangi2d_opts_t opts);
 
 
 

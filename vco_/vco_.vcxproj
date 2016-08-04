@@ -110,7 +110,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;VCO__EXPORTS;CVAPI_EXPORTS;BUILD_SHARED_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;VCOAPI_EXPORTS;CVAPI_EXPORTS;BUILD_SHARED_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -144,7 +144,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;VCO__EXPORTS;CVAPI_EXPORTS;BUILD_SHARED_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;VCOAPI_EXPORTS;CVAPI_EXPORTS;BUILD_SHARED_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -155,13 +155,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="cChamferMatching.h" />
-    <ClInclude Include="cFastMarching.h" />
-    <ClInclude Include="cFrangiFilter.h" />
-    <ClInclude Include="cGeodesic.h" />
-    <ClInclude Include="cMRF.h" />
-    <ClInclude Include="cP2pMatching.h" />
-    <ClInclude Include="cParam.h" />
+    <ClInclude Include="ChamferMatching.h" />
+    <ClInclude Include="FastMarching.h" />
+    <ClInclude Include="FrangiFilter.h" />
+    <ClInclude Include="Geodesic.h" />
+    <ClInclude Include="VCO.h" />
+    <ClInclude Include="P2pMatching.h" />
     <ClInclude Include="frangi\frangi.h" />
     <ClInclude Include="make_dll.h" />
     <ClInclude Include="std_include.h" />
@@ -175,16 +174,16 @@
     <ClInclude Include="TRW_S-v1.3\typeTruncatedLinear2D.h" />
     <ClInclude Include="TRW_S-v1.3\typeTruncatedQuadratic.h" />
     <ClInclude Include="TRW_S-v1.3\typeTruncatedQuadratic2D.h" />
+    <ClInclude Include="VCOParams.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\opencv_ectracted_lib2\src\bagofwords.cpp" />
-    <ClCompile Include="cChamferMatching.cpp" />
-    <ClCompile Include="cFastMarching.cpp" />
-    <ClCompile Include="cFrangiFilter.cpp" />
-    <ClCompile Include="cGeodesic.cpp" />
-    <ClCompile Include="cMRF.cpp" />
-    <ClCompile Include="cP2pMatching.cpp" />
-    <ClCompile Include="cParam.cpp" />
+    <ClCompile Include="ChamferMatching.cpp" />
+    <ClCompile Include="FastMarching.cpp" />
+    <ClCompile Include="FrangiFilter.cpp" />
+    <ClCompile Include="Geodesic.cpp" />
+    <ClCompile Include="VCO.cpp" />
+    <ClCompile Include="P2pMatching.cpp" />
     <ClCompile Include="..\opencv_ectracted_lib2\src\adler32.c" />
     <ClCompile Include="..\opencv_ectracted_lib2\src\bitstrm.cpp" />
     <ClCompile Include="..\opencv_ectracted_lib2\src\codec\grfmt_base.cpp" />
@@ -295,12 +294,12 @@
     <ClCompile Include="fast_marching2\fheap\fib.cpp" />
     <ClCompile Include="fast_marching2\perform_front_propagation_2d_addpd.cpp" />
     <ClCompile Include="frangi\frangi.cpp" />
-    <ClCompile Include="make_dll.cpp" />
     <ClCompile Include="mrfMinimizeMex_syshin.cpp" />
     <ClCompile Include="TRW_S-v1.3\minimize.cpp" />
     <ClCompile Include="TRW_S-v1.3\MRFEnergy.cpp" />
     <ClCompile Include="TRW_S-v1.3\ordering.cpp" />
     <ClCompile Include="TRW_S-v1.3\treeProbabilities.cpp" />
+    <ClCompile Include="VCOParams.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

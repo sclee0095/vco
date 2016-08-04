@@ -2,6 +2,10 @@
 
 #include "cParam.h" // for vco parameter
 #include <Windows.h>
+#include "../vco_/VCO.h"
+//#include "VCO.h"
+
+
 
 #ifdef _DEBUG 
 #pragma comment(lib,"vco64d.lib")
@@ -9,10 +13,7 @@
 #pragma comment(lib,"vco64.lib")
 #endif
 
-// make function using dll
-//extern "C" 
-__declspec(dllimport) void VesselCorrespondenceOptimization(double*, double*, double*, int, int,
-	cParam, std::string, int, double**, double**, int, char*, bool=false);
+
 
 
 
@@ -24,17 +25,18 @@ std::vector<std::string> get_file_in_folder(std::string folder, std::string file
 bool bVerbose = true;
 int main()
 {
+	
 	// set image root path
-	std::string root_path = "E:/300_autoSeg/IMG2";
+	std::string root_path = "F:/VCO/vco/IMG2";
 
 	// set catheter mask root path
-	std::string catheter_mask_root_path = "E:/300_autoSeg/shin/dataset/catheter_mask";
+	std::string catheter_mask_root_path = "F:/VCO/vco/catheter_mask";
 
 	// set vessel mask root path
-	std::string vessel_mask_root_path = "E:/300_autoSeg/shin/dataset/vessel_mask";
+	std::string vessel_mask_root_path = "F:/VCO/vco/vessel_mask";
 
 	// set stored root path
-	std::string result_root_path = "E:/300_autoSeg/c++_porting_result";
+	std::string result_root_path = "F:/VCO/vco/result";
 
 	// create image case lists and get llists
 	std::vector<std::string> case_list;
@@ -91,6 +93,7 @@ int main()
 
 				printf("%d of %d in seq(%d,%d)\n", k - start_frame + 1, end_frame - start_frame + 1, i, j);
 
+				
 				// read to t frame image
 				cur_str = root_path + '/' + case_list[i] + '/' + seq_list[j] + '/' + frame_list[k - start_frame];
 				cv::Mat img_t = cv::imread(cur_str, 0);
@@ -102,6 +105,8 @@ int main()
 				// read to t frame vessel mask
 				cur_str = vessel_mask_root_path + "/" + case_list[i] + "/" + seq_list[j] + "/" + mask_list[k - start_frame];
 				cv::Mat bimg_t = cv::imread(cur_str, 0);
+
+				
 
 				// make stored path and stored folder
 				std::string save_dir_path = result_root_path + "/" + case_list[i] + "/";
@@ -117,25 +122,61 @@ int main()
 				img_t.convertTo(img_t_64f, CV_64FC1);
 				img_tp1.convertTo(img_tp1_64f, CV_64FC1);
 				bimg_t.convertTo(bimg_t_64f, CV_64FC1);
-				double* arr_img_t, *arr_img_tp1, *arr_bimg_t, *arr_bimg_tp1 = 0, *arr_bimg_tp1_post_processed = 0;
+				double* arr_img_t, *arr_img_tp1, *arr_bimg_t;
 				arr_img_t = ((double*)img_t_64f.data);
 				arr_img_tp1 = ((double*)img_tp1_64f.data);
 				arr_bimg_t = ((double*)bimg_t_64f.data);
 
+				
+				char spath[200];
+				sprintf(spath, "%s", save_path.data());
+
 				// compute vco, input & output data tpye is doulbe
-				VesselCorrespondenceOptimization(arr_img_t, arr_img_tp1, arr_bimg_t, img_t.cols, img_t.rows, p, save_path, k + 1,
-					&arr_bimg_tp1, &arr_bimg_tp1_post_processed, k + 1, (char*)save_path.data(), bVerbose);
+				cVCO vco(arr_img_t, arr_bimg_t, arr_img_tp1, k + 1, img_t.cols, img_t.rows, bVerbose, spath);
+				
+				vco.VesselCorrespondenceOptimization();
+				
+				
+				// get to the mask of cv::Mat form
+				// get_tp1_Mask() function is returned pre-post processing mask of cv::Mat form
+				// get_tp1_Mask_pp() function is returned post-post processing mask of cv::Mat form
+				cv::Mat tp1_vmask = vco.get_tp1_Mask();
+				cv::Mat tp1_vmask_pp = vco.get_tp1_Mask_pp();
 
-				// for visualiazation
-				cv::Mat bimg_tp1(img_t.rows, img_t.cols, CV_64FC1, arr_bimg_tp1),
-					bimg_tp1_post_processed(img_t.rows, img_t.cols, CV_64FC1, arr_bimg_tp1_post_processed);
+				// get to the mask of double form(512x512)
+				// get_p_tp1_Mask() function is returned pre-post processing mask of double array pointer
+				// get_p_tp1_Mask_pp() function is returned post-post processing mask of double array pointer
+				double *tp1_p_vmask = vco.get_p_tp1_mask();
+				double *tp1_p_vmask_pp = vco.get_p_tp1_mask_pp();
 
-				bimg_tp1_post_processed.copyTo(seq_bimg_t);
+				// get to the mask of double form(512x512)
+				// get_p_tp1_mask_8u() function is returned pre-post processing mask of unsigned char array pointer
+				// get_p_tp1_mask_pp_8u() function is returned post-post processing mask of unsigned char  array pointer
+				unsigned char*tp_p_vmask_8u = vco.get_p_tp1_mask_8u();
+				unsigned char*tp_p_vmask_pp_8u = vco.get_p_tp1_mask_pp_8u();
 
-				cv::Mat view;
-				seq_bimg_t.convertTo(view, CV_8UC1);
+				// get to the each segment 2d array vector
+				// getVsegVpts2dArr() function is returned pre-post processing each segment 2d array vector
+				// getVsegVpts2dArr_pp() function is returned post-post processing each segment 2d array vector
+				std::vector<std::vector<cv::Point>> tp1_vsegm_vpt_2darr = vco.getVsegVpts2dArr();
+				std::vector<std::vector<cv::Point>> tp1_vsegm_vpt_2darr_pp = vco.getVsegVpts2dArr_pp();
 
-				cv::imshow("veiw", view);
+				// get to the selected as uniform term point
+				// get_t_vpts_arr() function is returned pre-post processing points
+				// get_t_vpts_arr() function is returned post-post processing points
+				std::vector<cv::Point> t_vpt_arr = vco.get_t_vpts_arr();
+				std::vector<cv::Point> tp1_vpt_arr = vco.get_t_vpts_arr();
+
+				// get to the displacement vector. this is based selected as uniform term point
+				std::vector<cv::Point> disp_vec_arr = vco.get_disp_vec_arr();
+
+				// get to feature pts. if type is 0, it is end feature. another(1) is junction points 
+				std::vector<cVCO::ves_feat_info> features = vco.getVesFeatPts();
+
+
+				// for visualiazation using opencv library
+				cv::imshow("tp1_vmask", tp1_vmask);
+				cv::imshow("tp1_vmask_pp", tp1_vmask_pp);
 				cv::waitKey();
 
 				// check running time
@@ -143,6 +184,8 @@ int main()
 				printf("Elapsed: %f seconds\n", (double)(end_time - start_time) / CLOCKS_PER_SEC);
 
 
+				// release
+				delete[] tp1_p_vmask, tp1_p_vmask_pp;
 			}
 
 			for (int p1 = 0; p1 < end_frame - start_frame + 1; p1++)

@@ -1,4 +1,4 @@
-#include "cFrangiFilter.h"
+#include "FrangiFilter.h"
 
 
 cFrangiFilter::cFrangiFilter()
@@ -155,7 +155,7 @@ void cFrangiFilter::ComputeMinMaxHevFeat(std::vector<cv::Mat> &hfeat, std::vecto
 	}
 }
 
-void cFrangiFilter::frangi(cv::Mat input, cv::Mat *vess)
+cv::Mat cFrangiFilter::frangi(cv::Mat input)
 {
 	//set default frangi opts
 	frangi2d_opts_t opts;
@@ -229,6 +229,7 @@ void cFrangiFilter::frangi(cv::Mat input, cv::Mat *vess)
 
 	//read image file, run frangi, output to output file
 	//cv::Mat input_img = imread(filename, CV_LOAD_IMAGE_GRAYSCALE);
+
 	cv::Mat input_img;
 	input.copyTo(input_img);
 	cv::Mat input_img_fl;
@@ -251,5 +252,5 @@ void cFrangiFilter::frangi(cv::Mat input, cv::Mat *vess)
 	//cv::waitKey();
 	//cv::imwrite(outFilename + ".png", vesselness_8u * 255);
 
-	*vess = vesselness;
+	return vesselness;
 }

@@ -1,15 +1,15 @@
 #pragma once
-//#include <stdio.h>
-//#include <limits>
+
 #include "std_include.h"
 
-class cParam
+class VCO_EXPORTS cVCOParams
 {
 public:
-	cParam();
-	~cParam();
+	cVCOParams();
+	~cVCOParams();
 
-	bool use_gc ;
+	// parameters
+	bool use_global_chamfer;
 	double thre_ivessel;
 	int thre_dist_step1;
 	int thre_dist_step2;
@@ -19,14 +19,14 @@ public:
 	int n_all_cands;
 	int sampling_period;
 
-	 //parameters for fast marching
+	//parameters for fast marching
 	double pfm_nb_iter_max;
 
 	// parameters for SIFT
 	double psift_scale;
 	double psift_magnif;
 	double psift_binSize;
-	double psift_nnorm ; // l - 2 norm
+	double psift_nnorm; // l - 2 norm
 
 	// parameters for frangi filter
 	int pfrangi_FrangiScaleRange[2];
@@ -35,6 +35,4 @@ public:
 	int pfrangi_FrangiBetaTwo;
 	bool pfrangi_verbose;
 	bool pfrangi_BlackWhite;
-	
 };
-

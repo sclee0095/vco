@@ -30,22 +30,7 @@
     <ClInclude Include="std_include.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="cChamferMatching.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cGeodesic.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cMRF.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cParam.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="make_dll.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cP2pMatching.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="TRW_S-v1.3\typeTruncatedLinear.h">
@@ -81,30 +66,30 @@
     <ClInclude Include="frangi\frangi.h">
       <Filter>Frangi</Filter>
     </ClInclude>
-    <ClInclude Include="cFastMarching.h">
+    <ClInclude Include="ChamferMatching.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Geodesic.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="VCO.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="P2pMatching.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="FrangiFilter.h">
+      <Filter>Frangi</Filter>
+    </ClInclude>
+    <ClInclude Include="FastMarching.h">
       <Filter>FMM</Filter>
     </ClInclude>
-    <ClInclude Include="cFrangiFilter.h">
-      <Filter>Frangi</Filter>
+    <ClInclude Include="VCOParams.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mrfMinimizeMex_syshin.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cChamferMatching.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cGeodesic.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cMRF.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cParam.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="make_dll.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="..\opencv_ectracted_lib2\src\adler32.c">
@@ -425,9 +410,6 @@
     <ClCompile Include="..\opencv_ectracted_lib2\src\zutil.c">
       <Filter>opencv</Filter>
     </ClCompile>
-    <ClCompile Include="cP2pMatching.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="..\opencv_ectracted_lib2\src\src\matrix.cpp">
       <Filter>opencv</Filter>
     </ClCompile>
@@ -455,11 +437,26 @@
     <ClCompile Include="fast_marching2\perform_front_propagation_2d_addpd.cpp">
       <Filter>FMM</Filter>
     </ClCompile>
-    <ClCompile Include="cFastMarching.cpp">
+    <ClCompile Include="ChamferMatching.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Geodesic.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="VCO.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="P2pMatching.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FastMarching.cpp">
       <Filter>FMM</Filter>
     </ClCompile>
-    <ClCompile Include="cFrangiFilter.cpp">
+    <ClCompile Include="FrangiFilter.cpp">
       <Filter>Frangi</Filter>
+    </ClCompile>
+    <ClCompile Include="VCOParams.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

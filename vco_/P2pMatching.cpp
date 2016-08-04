@@ -1,4 +1,4 @@
-#include "cP2pMatching.h"
+#include "P2pMatching.h"
 
 cP2pMatching::cP2pMatching(int size)
 {
@@ -14,26 +14,31 @@ cP2pMatching::~cP2pMatching()
 {
 }
 
-void cP2pMatching::run(cv::Mat img_t, cv::Mat img_tp1, cv::Mat gt_bimg_t, cParam p, int t_x, int t_y, cv::Mat ivessel_tp1, int fidx_tp1, char* savePath,
+void cP2pMatching::run(cv::Mat img_t, cv::Mat img_tp1, cv::Mat gt_bimg_t, 
+	cVCOParams p, 
+	int t_x, int t_y, 
+	cv::Mat ivessel_tp1, 
+	int fidx_tp1, char* savePath,
 	bool bVerbose,
-	std::vector<std::vector<cv::Point>> *o_E, std::vector<cv::Mat>* o_cell_cands, std::vector<cv::Mat>* o_cell_cands_dists, std::vector<cv::Point> *o_J)
+	std::vector<std::vector<cv::Point>> *o_E, 
+	std::vector<cv::Mat>* o_cell_cands, 
+	std::vector<cv::Mat>* o_cell_cands_dists, 
+	std::vector<cv::Point> *o_J,
+	std::vector<cv::Point> *o_end)
 {
 	int nY = img_tp1.rows;
 	int nX = img_tp1.cols;
 
-	std::vector<cv::Point> J;
+	std::vector<cv::Point> J,end;
 	std::vector<std::vector<cv::Point>> E;
 	cv::Mat bJ, mapMat;
-
-	MakeGraphFromImage(gt_bimg_t, J, bJ, E, mapMat);
+	
+	MakeGraphFromImage(gt_bimg_t, J, end, bJ, E, mapMat);
 	float *d_tp1 = 0;
 	int numKeyPts;
 
-
 	cv::Mat crop;
 	numKeyPts = (nY - 2 * halfPatchSize)*(nX - 2 * halfPatchSize)/4;
-
-	
 
 	cv::Mat d_tp1_img;
 	d_tp1_img = cv::Mat(patchSize*patchSize,numKeyPts, CV_8UC1);
@@ -283,8 +288,8 @@ void cP2pMatching::run(cv::Mat img_t, cv::Mat img_tp1, cv::Mat gt_bimg_t, cParam
 
 	// local point matching
 	int nE = E.size();
-	std::vector<cv::Mat> cell_cands(nE);
-	std::vector<cv::Mat> cell_cands_dists(nE);
+	std::vector<cv::Mat> v_segm_pt_cands(nE);
+	std::vector<cv::Mat> v_segm_pt_cands_d(nE);
 
 	//printf("\n");
 	//printf("\n");
@@ -397,7 +402,10 @@ void cP2pMatching::run(cv::Mat img_t, cv::Mat img_tp1, cv::Mat gt_bimg_t, cParam
 				GetCandidates(img_t, img_tp1, translated_E, cv::Point(t_x + tFlow[0].x, t_y + tFlow[0].y), d_tp1, numKeyPts, idx_img_tp1, ivessel_tp1, p, cand_ivessel,
 					arr_cands, arr_cands_dists, d_tp1_img);
 
-				cv::Rect rc(p.n_cands*(iTrial - 1) , 0, p.n_cands*iTrial - p.n_cands*(iTrial - 1) , npt);
+				cv::Rect rc(p.n_cands*(iTrial - 1), 0, 
+					//p.n_cands*iTrial - p.n_cands*(iTrial - 1), 
+					p.n_cands,
+					npt);
 				cv::Mat roi = all_arr_cands(rc);
 				//roi = arr_cands;
 				arr_cands.copyTo(roi);
@@ -448,7 +456,10 @@ void cP2pMatching::run(cv::Mat img_t, cv::Mat img_tp1, cv::Mat gt_bimg_t, cParam
 				//all_arr_cands(:, p.n_cands*(iTrial - 1) + 1 : p.n_cands*iTrial) = arr_cands;
 				//all_arr_cands_dists(:, p.n_cands*(iTrial - 1) + 1 : p.n_cands*iTrial) = arr_cands_dists;
 
-				cv::Rect rc(p.n_cands*(iTrial - 1) , 0, p.n_cands*iTrial - p.n_cands*(iTrial - 1) , npt);
+				cv::Rect rc(p.n_cands*(iTrial - 1), 0, 
+					//p.n_cands*iTrial - p.n_cands*(iTrial - 1), 
+					p.n_cands,
+					npt);
 				cv::Mat roi = all_arr_cands(rc);
 				arr_cands.copyTo(roi);
 				roi = all_arr_cands_dists(rc);
@@ -457,9 +468,10 @@ void cP2pMatching::run(cv::Mat img_t, cv::Mat img_tp1, cv::Mat gt_bimg_t, cParam
 
 				iTrial++;
 			}
+			
 		}
-		cell_cands[j] = ( all_arr_cands);
-		cell_cands_dists[j] = (all_arr_cands_dists);
+		v_segm_pt_cands[j] = ( all_arr_cands);
+		v_segm_pt_cands_d[j] = (all_arr_cands_dists);
 
 		//cv::Mat ind;
 		//all_arr_cands.copyTo(ind);
@@ -478,13 +490,11 @@ void cP2pMatching::run(cv::Mat img_t, cv::Mat img_tp1, cv::Mat gt_bimg_t, cParam
 				tmp_ind.push_back(ind.at<cv::Point>(k));
 		}*/
 		//ind(ind == 0) = [];
-		
 	}
 
 
 	for (int j = 0; j < nE; j++) ////// for each segment
 	{
-
 		int len = E[ j ].size();
 		//cv::Mat samp_idx = [1:p.sampling_period : len];
 		std::vector<int> samp_idx(round(len / (float)p.sampling_period));
@@ -512,16 +522,19 @@ void cP2pMatching::run(cv::Mat img_t, cv::Mat img_tp1, cv::Mat gt_bimg_t, cParam
 		E[j] = tmpE;
 	}
 
+	printf("end of p2p matching\n");
 
+	// assign outputs
 	*o_E = E;
-	*o_cell_cands = cell_cands;
-	*o_cell_cands_dists = cell_cands_dists;
+	*o_cell_cands = v_segm_pt_cands;
+	*o_cell_cands_dists = v_segm_pt_cands_d;
 	*o_J = J;
-
+	*o_end = end;
 	//delete[] d_tp1;
 	//delete[] f_tp1;
 }
-void cP2pMatching::MakeGraphFromImage(cv::Mat bimg, std::vector<cv::Point> &J, cv::Mat &bJ,std::vector<std::vector<cv::Point>> &E,cv::Mat &mapMat)
+void cP2pMatching::MakeGraphFromImage(cv::Mat bimg, std::vector<cv::Point> &J, std::vector<cv::Point> &o_end, cv::Mat &bJ,
+	std::vector<std::vector<cv::Point>> &E,cv::Mat &mapMat)
 {
 	// parameter
 	int patch_half_size = 5;
@@ -657,11 +670,13 @@ void cP2pMatching::MakeGraphFromImage(cv::Mat bimg, std::vector<cv::Point> &J, c
 	ends = tmpEnds;
 	
 	J = branch;
+	o_end = ends;
 	std::vector<cv::Point> V;
 	for (int i = 0; i < branch.size(); i++)
 		V.push_back(branch[i]);
 	for (int i = 0; i < ends.size(); i++)
 		V.push_back(ends[i]);
+
 
 	int numV = V.size();
 	bJ = cv::Mat::zeros(numV, 1,CV_8UC1); 
@@ -1750,7 +1765,7 @@ std::vector<cv::Point> cP2pMatching::bresenham(cv::Point xy1, cv::Point xy2)
 
 //function[arr_cands, arr_cands_dists] = GetCandidates(img_t, img_tp1, E, tran_vec, d_tp1, idx_img_tp1, ivessel_tp1, p, psift)
 void cP2pMatching::GetCandidates(cv::Mat img_t, cv::Mat img_tp1, std::vector<cv::Point> E,
-	cv::Point tran_vec, float* d_tp1, int d_tp1_numkeys, cv::Mat idx_img_tp1, cv::Mat ivessel_tp1, cParam p, cv::Mat cand_ivessel,
+	cv::Point tran_vec, float* d_tp1, int d_tp1_numkeys, cv::Mat idx_img_tp1, cv::Mat ivessel_tp1, cVCOParams p, cv::Mat cand_ivessel,
 	cv::Mat &arr_cands, cv::Mat &arr_cands_dists, cv::Mat d_tp1_img)
 {
 	//[nY, nX] = size(img_t);

@@ -9,7 +9,7 @@
 
 
 
-class TESTDLL_NKJ cFrangiFilter
+class VCO_EXPORTS cFrangiFilter
 {
 public:
 	cFrangiFilter();
@@ -21,7 +21,7 @@ public:
 	cv::Mat makeFrangiFilter(cv::Mat image, std::vector<double> sigmas, std::vector<cv::Mat> result);
 	void ComputeMinMaxHevFeat(std::vector<cv::Mat> &hfeat, std::vector<double> &_min_fss, std::vector<double> &_max_fss);
 
-	void frangi(cv::Mat input, cv::Mat *vess);
+	cv::Mat frangi(cv::Mat input);
 	
 };
 

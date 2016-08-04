@@ -1,4 +1,4 @@
-#include "cChamferMatching.h"
+#include "ChamferMatching.h"
 
 
 cChamferMatching::cChamferMatching()
@@ -10,7 +10,7 @@ cChamferMatching::~cChamferMatching()
 {
 }
 
-cv::Mat cChamferMatching::computeChamferMatch(cv::Mat bimg_t, cv::Mat bimg_tp1,cParam p,int &t_x, int &t_y)
+cv::Mat cChamferMatching::computeChamferMatch(cv::Mat bimg_t, cv::Mat bimg_tp1,cVCOParams p,int &t_x, int &t_y)
 {
 	int nY = bimg_tp1.rows;
 	int nX = bimg_tp1.cols;

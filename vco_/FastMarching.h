@@ -52,7 +52,7 @@
 //#endif
 
 
-class TESTDLL_NKJ cFastMarching
+class VCO_EXPORTS cFastMarching
 {
 public:
 	cFastMarching();

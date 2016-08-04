@@ -17,13 +17,11 @@
 
 #include <limits>
 
-#ifdef VCO__EXPORTS
-#define TESTDLL_NKJ __declspec(dllexport)
+#ifdef VCOAPI_EXPORTS
+#define VCO_EXPORTS __declspec(dllexport)
 #else
-#define TESTDLL_NKJ __declspec(dllimport)
+#define VCO_EXPORTS __declspec(dllimport)
 #endif
-
-
 
 #include <stdarg.h>
 

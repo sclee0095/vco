@@ -1,4 +1,4 @@
-#include "cFastMarching.h"
+#include "FastMarching.h"
 
 
 cFastMarching::cFastMarching()

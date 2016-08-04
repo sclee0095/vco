@@ -32,7 +32,7 @@
 #endif
 
 #include "perform_front_propagation_2d_addpd.h"
-#include "../cFastMarching.h"
+#include "../FastMarching.h"
 #include "fheap/fib.h"
 #include "fheap/fibpriv.h"
 

@@ -1,4 +1,4 @@
-#include "cGeodesic.h"
+#include "Geodesic.h"
 
 cGeodesic::cGeodesic()
 {
