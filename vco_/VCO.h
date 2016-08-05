@@ -280,13 +280,23 @@ public:
 	std::vector<std::vector<cv::Point>> eraseRepeatSegPts(std::vector<std::vector<cv::Point>> segVec,int nX, int nY);
 
 	// get to feature points
-	std::vector<ves_feat_info> getVesFeatPts();
+	std::vector<ves_feat_info> get_t_VesFeatPts();
+	std::vector<cVCO::ves_feat_info> get_tp1_VesFeatPts();
+
+	std::vector<cVCO::ves_feat_info> find_tp1_features(std::vector<cVCO::ves_feat_info>  t_features, 
+		std::vector<std::vector<cv::Point>> t_seg_vec,
+		std::vector<std::vector<cv::Point>> tp1_seg_vec);
+
+	std::vector<cVCO::ves_feat_info> find_tp1_features(std::vector<cVCO::ves_feat_info> t_features,
+		std::vector<cv::Point> t_vseg,
+		std::vector<cv::Point> tp1_vseg);
 
 	// set to feature points to our structure form
-	void setVesFeatPts(
-		// OUTPUTS
+	std::vector<cVCO::ves_feat_info> setVesFeatPts(
+		// INPUTS
 		std::vector<cv::Point> junction, 
-		std::vector<cv::Point> end
+		std::vector<cv::Point> end,
+		cv::Point tans
 		);
 
 	// get to vessel segment vector points 2d array of pre-post processing
@@ -353,7 +363,8 @@ public:
 	std::vector<cv::Point> m_disp_vec_arr;// displacemente vector to subtract tp1 frame candidates vetors to t frame candidates vectors
 
 	// vessel feature points for frame t+1, cv::Point array
-	std::vector<ves_feat_info> m_feat_pts;
+	std::vector<ves_feat_info> m_t_feat_pts;
+	std::vector<ves_feat_info> m_tp1_feat_pts;
 
 	// *** TODO *** //
 	// vessel segmentation mask (512x512, pixelwise labels)

@@ -863,9 +863,10 @@ void cVCO::VesselCorrespondenceOptimization(
 	p2p.run(img_t, img_tp1, gc_bimg_t, params, gc_t_x, gc_t_y, m_frangi_vesselness_tp1,
 		fidx_tp1, savePath, bVerbose, &v_segm_pt_coors, &v_segm_pt_cands, &v_segm_pt_cands_d, &J, &end);
 
-	setVesFeatPts(J,end);
+	m_t_feat_pts = setVesFeatPts(J, end, cv::Point(gc_t_x, gc_t_y));
 
-	m_tp1_vpt_arr = makeSegvec2Allvec(v_segm_pt_coors,cv::Point(gc_t_x,gc_t_y));
+
+	m_t_vpt_arr = makeSegvec2Allvec(v_segm_pt_coors,cv::Point(gc_t_x,gc_t_y));
 
 	// * number of vessel segments
 	int ves_segm_num = v_segm_pt_coors.size();
@@ -986,21 +987,30 @@ void cVCO::VesselCorrespondenceOptimization(
 	std::vector<cv::Point> all_vessel_pt;
 	std::vector<cv::Point> cor_line_pt;
 
+	// make new path in tp1 frame
 	mkNewPath(m_frangi_vesselness_tp1,v_segm_to_all_coors,all_cands,all_joining_seg,labels,ves_segm_num,num_all_joining_seg,
 		&newE,&all_v,&all_vessel_pt);
 
-	
+
+	// stored tp1 feature points
+	m_tp1_feat_pts = find_tp1_features(m_t_feat_pts,
+		m_t_vpt_arr,
+		all_v);
+
+
+
 	//stored previous segment vector 
 	m_tp1_vsegm_vpt_2darr = newE;
 
 	// stored all candidates
-	m_t_vpt_arr = all_v;
+	m_tp1_vpt_arr = all_v;
 
-	m_disp_vec_arr = makeDisplacementVec(m_tp1_vpt_arr, m_t_vpt_arr);
+	// stroed displacement vectors
+	m_disp_vec_arr = makeDisplacementVec(m_t_vpt_arr, m_tp1_vpt_arr);
 
 	if (bVerbose)
 	{
-		cv::Mat drawDisplacemete = drawDisplacementeVec(img_tp1, m_tp1_vpt_arr, m_t_vpt_arr, m_disp_vec_arr);
+		cv::Mat drawDisplacemete = drawDisplacementeVec(img_tp1, m_t_vpt_arr, m_tp1_vpt_arr, m_disp_vec_arr);
 		sprintf(str, "%s%d-th_frame_displacemente.png", savePath, fidx_tp1);
 		cv::imwrite(str, drawDisplacemete);
 	}
@@ -2508,35 +2518,44 @@ double* cVCO::get_p_tp1_mask()
 	return m_p_tp1_vmask;
 }
 
-std::vector<cVCO::ves_feat_info> cVCO::getVesFeatPts()
+std::vector<cVCO::ves_feat_info> cVCO::get_t_VesFeatPts()
 {
-	return m_feat_pts;
+	return m_t_feat_pts;
 }
-void cVCO::setVesFeatPts(std::vector<cv::Point> junction, std::vector<cv::Point> end)
+std::vector<cVCO::ves_feat_info> cVCO::get_tp1_VesFeatPts()
+{
+	return m_tp1_feat_pts;
+}
+
+std::vector<cVCO::ves_feat_info>cVCO::setVesFeatPts(std::vector<cv::Point> junction, std::vector<cv::Point> end, cv::Point tans)
 { 
 	int junctionSize = junction.size();
 	int endSize = end.size();
-	m_feat_pts.clear();
+
+	std::vector<cVCO::ves_feat_info> feat_pts;
+	
 
 	// stored junction feature points 
 	for (int i = 0; i < junctionSize; i++)
 	{
 		cVCO::ves_feat_info cur_feat;
-		cur_feat.x = junction[i].x;
-		cur_feat.y = junction[i].y;
+		cur_feat.x = junction[i].x - tans.x;
+		cur_feat.y = junction[i].y - tans.y;
 		cur_feat.type = 1;
-		m_feat_pts.push_back(cur_feat);
+		feat_pts.push_back(cur_feat);
 	}
 
 	// stored end feature points 
 	for (int i = 0; i < endSize; i++)
 	{
 		cVCO::ves_feat_info cur_feat;
-		cur_feat.x = end[i].x;
-		cur_feat.y = end[i].y;
+		cur_feat.x = end[i].x - tans.x;
+		cur_feat.y = end[i].y - tans.y;
 		cur_feat.type = 0;
-		m_feat_pts.push_back(cur_feat);
+		feat_pts.push_back(cur_feat);
 	}
+
+	return feat_pts;
 }
 std::vector<std::vector<cv::Point>> cVCO::getVsegVpts2dArr()
 {
@@ -2590,4 +2609,87 @@ unsigned char* cVCO::get_p_tp1_mask_pp_8u()
 	}
 
 	return p_tp1_vmask_pp_8u;
+}
+
+std::vector<cVCO::ves_feat_info> cVCO::find_tp1_features(std::vector<cVCO::ves_feat_info> t_features, 
+	std::vector<std::vector<cv::Point>> t_seg_vec,
+	std::vector<std::vector<cv::Point>> tp1_seg_vec)
+{
+	std::vector<cVCO::ves_feat_info> features;
+	std::vector<cv::Point> check;
+	for (int i = 0; i < t_features.size(); i++)
+	{
+		for (int j = 0; j < t_seg_vec.size(); j++)
+		{
+			if (t_seg_vec[j][0].x == t_features[i].x &&
+				t_seg_vec[j][0].y == t_features[i].y)
+			{
+				cVCO::ves_feat_info cur_feature;
+				cur_feature.x = tp1_seg_vec[j][0].x;
+				cur_feature.y = tp1_seg_vec[j][0].y;
+				cur_feature.type = t_features[i].type;
+				
+				features.push_back(cur_feature);
+				check.push_back(cv::Point(t_features[i].x, t_features[i].y));
+			}
+			if (t_seg_vec[j][t_seg_vec[j].size() - 1].x == t_features[i].x &&
+				t_seg_vec[j][t_seg_vec[j].size() - 1].y == t_features[i].y)
+			{
+				cVCO::ves_feat_info cur_feature;
+				cur_feature.x = tp1_seg_vec[j][tp1_seg_vec[j].size() - 1].x;
+				cur_feature.y = tp1_seg_vec[j][tp1_seg_vec[j].size() - 1].y;
+				cur_feature.type = t_features[i].type;
+
+				features.push_back(cur_feature);
+				check.push_back(cv::Point(t_features[i].x, t_features[i].y));
+			}
+		}
+		
+	}
+	return features;
+}
+std::vector<cVCO::ves_feat_info> cVCO::find_tp1_features(std::vector<cVCO::ves_feat_info> t_features,
+	std::vector<cv::Point> t_vseg,
+	std::vector<cv::Point> tp1_vseg)
+{
+	std::vector<cVCO::ves_feat_info> features;
+	std::vector<cv::Point> check;
+
+	cv::Mat checked_repeat(img_h,img_w,CV_8UC1);
+	checked_repeat = 0;
+
+	for (int i = 0; i < t_features.size(); i++)
+	{
+		for (int j = 0; j < t_vseg.size(); j++)
+		{
+			if (t_vseg[j].x == t_features[i].x &&
+				t_vseg[j].y == t_features[i].y &&
+				!checked_repeat.at<uchar>(t_vseg[j]))
+			{
+				cVCO::ves_feat_info cur_feature;
+				cur_feature.x = tp1_vseg[j].x;
+				cur_feature.y = tp1_vseg[j].y;
+				cur_feature.type = t_features[i].type;
+
+				features.push_back(cur_feature);
+				check.push_back(cv::Point(t_features[i].x, t_features[i].y));
+				checked_repeat.at<uchar>(t_vseg[j]) = 255;
+			}
+			if (t_vseg[j].x == t_features[i].x &&
+				t_vseg[j].y == t_features[i].y &&
+				!checked_repeat.at<uchar>(t_vseg[j]))
+			{
+				cVCO::ves_feat_info cur_feature;
+				cur_feature.x = tp1_vseg[j].x;
+				cur_feature.y = tp1_vseg[j].y;
+				cur_feature.type = t_features[i].type;
+
+				features.push_back(cur_feature);
+				check.push_back(cv::Point(t_features[i].x, t_features[i].y));
+				checked_repeat.at<uchar>(t_vseg[j]) = 255;
+			}
+		}
+
+	}
+	return features;
 }

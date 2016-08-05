@@ -22,7 +22,7 @@ typedef std::wstring str_t;
 // read in folder
 std::vector<std::string> get_file_in_folder(std::string folder, std::string file_type = "*.*");
 
-bool bVerbose = true;
+bool bVerbose = false;
 int main()
 {
 	
@@ -85,7 +85,7 @@ int main()
 			}
 			cv::Mat seq_bimg_t;
 
-			for (int k = start_frame; k < end_frame - 1; k++)
+			for (int k = start_frame+2; k < end_frame - 1; k++)
 			{
 				// check running time
 				clock_t start_time = clock();
@@ -171,8 +171,12 @@ int main()
 				std::vector<cv::Point> disp_vec_arr = vco.get_disp_vec_arr();
 
 				// get to feature pts. if type is 0, it is end feature. another(1) is junction points 
-				std::vector<cVCO::ves_feat_info> features = vco.getVesFeatPts();
+				std::vector<cVCO::ves_feat_info> t_features = vco.get_t_VesFeatPts();
+				std::vector<cVCO::ves_feat_info> tp1_features = vco.get_tp1_VesFeatPts();
 
+				// get to vesselness to frangi filter
+				float* p_vesselnessFrangi = vco.get_tp1_p_FrangiVesselnessMask();
+				cv::Mat vesselnessFrangi = vco.get_tp1_FrangiVesselnessMask();
 
 				// for visualiazation using opencv library
 				cv::imshow("tp1_vmask", tp1_vmask);
