@@ -984,18 +984,19 @@ void cVCO::VesselCorrespondenceOptimization(
 
 	std::vector<std::vector<cv::Point>> newE;
 	std::vector<cv::Point> all_v;
+	std::vector<cv::Point> all_vpts;
 	std::vector<cv::Point> all_vessel_pt;
 	std::vector<cv::Point> cor_line_pt;
 
 	// make new path in tp1 frame
 	mkNewPath(m_frangi_vesselness_tp1,v_segm_to_all_coors,all_cands,all_joining_seg,labels,ves_segm_num,num_all_joining_seg,
-		&newE,&all_v,&all_vessel_pt);
+		&newE, &all_v, &all_vessel_pt, &all_vpts);
 
 
 	// stored tp1 feature points
 	m_tp1_feat_pts = find_tp1_features(m_t_feat_pts,
 		m_t_vpt_arr,
-		all_v);
+		all_vpts);
 
 
 
@@ -1003,7 +1004,7 @@ void cVCO::VesselCorrespondenceOptimization(
 	m_tp1_vsegm_vpt_2darr = newE;
 
 	// stored all candidates
-	m_tp1_vpt_arr = all_v;
+	m_tp1_vpt_arr = all_vpts;
 
 	// stroed displacement vectors
 	m_disp_vec_arr = makeDisplacementVec(m_t_vpt_arr, m_tp1_vpt_arr);
@@ -1293,8 +1294,8 @@ void cVCO::VesselCorrespondenceOptimization(
 	cv::findNonZero(draw_bimg_tp1, draw_idx);
 	//all_vessel_pt = find(draw_bimg_tp1);
 
+	all_vessel_pt = draw_idx;
 	if (bVerbose) {
-		all_vessel_pt = draw_idx;
 		sprintf(str, "%s%d-th_frame_final_b.png", savePath, fidx_tp1);
 		cv::imwrite(str, draw_bimg_tp1);
 	}
@@ -1486,7 +1487,8 @@ void cVCO::globalChamferMatching(
 
 void cVCO::mkNewPath(cv::Mat m_frangi_vesselness_tp1, std::vector<std::vector<int>> v_segm_to_all_coors, cv::Mat all_cands, 
 	std::vector<std::vector<int>> all_joining_seg, double* labels, int ves_segm_num, int num_all_joining_seg,
-	std::vector<std::vector<cv::Point>> *newE, std::vector<cv::Point> *all_v, std::vector<cv::Point> *all_vessel_pt)
+	std::vector<std::vector<cv::Point>> *newE, std::vector<cv::Point> *all_v, std::vector<cv::Point> *all_vessel_pt,
+	std::vector<cv::Point> *tp1_vpts)
 {
 	int nX = m_frangi_vesselness_tp1.cols;
 	int nY = m_frangi_vesselness_tp1.rows;
@@ -1507,6 +1509,7 @@ void cVCO::mkNewPath(cv::Mat m_frangi_vesselness_tp1, std::vector<std::vector<in
 	cFastMarching fmm;
 	for (int j = 0; j < ves_segm_num; j++) {
 		std::vector<cv::Point> temp_v;
+		std::vector<cv::Point> temp_vpts;
 		cv::Mat temp = cv::Mat::zeros(nY, nX, CV_64FC1);
 		std::vector<int> t_seg = v_segm_to_all_coors[j];
 		int len_t_seg = t_seg.size();
@@ -1518,6 +1521,10 @@ void cVCO::mkNewPath(cv::Mat m_frangi_vesselness_tp1, std::vector<std::vector<in
 		for (int k = 0; k < len_t_seg; k++) {
 			int t_idx = t_seg[k] - 1;
 			double t_label = labels[t_idx] - 1;
+			if (t_label >= params.n_all_cands)
+			{
+				temp_vpts.push_back(cv::Point(-1,-1));
+			}
 			if (t_label < params.n_all_cands) {
 				//int pt1_y = all_coors[t_idx].y; int pt1_x = all_coors[t_idx].x;
 				//cv::Point pt2 = all_cands.at<cv::Point>(t_idx, t_label);
@@ -1534,11 +1541,13 @@ void cVCO::mkNewPath(cv::Mat m_frangi_vesselness_tp1, std::vector<std::vector<in
 					//temp_v = [temp_v; st_pt];
 
 					temp_v.push_back(st_pt);
+					temp_vpts.push_back(st_pt);
 				}
 				else {
 					ed_pt = all_cands.at<cv::Point>(t_idx, (int)t_label);
 					//temp_v = [temp_v; ed_pt];
 					temp_v.push_back(ed_pt);
+					temp_vpts.push_back(ed_pt);
 				}
 			}
 			else {
@@ -1624,9 +1633,16 @@ void cVCO::mkNewPath(cv::Mat m_frangi_vesselness_tp1, std::vector<std::vector<in
 			}
 		}
 		newE->push_back(cum_seg_path);
+		for (int k = 0; k < temp_vpts.size(); k++)
+		{
+			tp1_vpts->push_back(temp_vpts[k]);
+		}
 		if (cum_seg_path.size()) {
 			for (int k = 0; k < temp_v.size(); k++)
+			{
 				all_v->push_back(temp_v[k]);
+			}
+			
 			//all_v = [all_v; temp_v];
 			//lidx = sub2ind([nY, nX], cum_seg_path(:, 1), cum_seg_path(:, 2));
 
@@ -2412,7 +2428,10 @@ std::vector<cv::Point> cVCO::makeDisplacementVec(std::vector<cv::Point> pre, std
 	
 	for (int i = 0; i < pre.size(); i++)
 	{
-		displacementeVec.push_back(post[i] - pre[i]);
+		if (post[i] == cv::Point(-1, -1))
+			displacementeVec.push_back(cv::Point(1000, 1000));
+		else
+			displacementeVec.push_back(post[i] - pre[i]);
 	}
 
 	return displacementeVec;
@@ -2435,23 +2454,29 @@ cv::Mat cVCO::drawDisplacementeVec(cv::Mat img,std::vector<cv::Point> pre, std::
 
 	for (int i = 0; i < size; i++)
 	{
-			//palette.at<uchar>(dispVec[i].y, dispVec[i].y * 3 + 0) = 0;
-			//palette.at<uchar>(dispVec[i].y, dispVec[i].y * 3 + 1) = 0;
-			//palette.at<uchar>(dispVec[i].y, dispVec[i].y * 3 + 2) = 255;
-
-		cv::line(palette, pre[i], post[i],CV_RGB(255,0,0));
+		//palette.at<uchar>(dispVec[i].y, dispVec[i].y * 3 + 0) = 0;
+		//palette.at<uchar>(dispVec[i].y, dispVec[i].y * 3 + 1) = 0;
+		//palette.at<uchar>(dispVec[i].y, dispVec[i].y * 3 + 2) = 255;
+		if (dispVec[i].x < 1000)
+		{
+			cv::line(palette, pre[i], post[i], CV_RGB(255, 0, 0));
+		}
 		
 	}
 
 	for (int i = 0; i < pre.size(); i++)
 	{
-		palette.at<uchar>(pre[i].y, pre[i].x * 3 + 0) = 255;
-		palette.at<uchar>(pre[i].y, pre[i].x * 3 + 1) = 0;
-		palette.at<uchar>(pre[i].y, pre[i].x * 3 + 2) = 0;
+		if (dispVec[i].x < 1000)
+		{
 
-		palette.at<uchar>(post[i].y, post[i].x * 3 + 0) = 0;
-		palette.at<uchar>(post[i].y, post[i].x * 3 + 1) = 255;
-		palette.at<uchar>(post[i].y, post[i].x * 3 + 2) = 0;
+			palette.at<uchar>(pre[i].y, pre[i].x * 3 + 0) = 255;
+			palette.at<uchar>(pre[i].y, pre[i].x * 3 + 1) = 0;
+			palette.at<uchar>(pre[i].y, pre[i].x * 3 + 2) = 0;
+
+			palette.at<uchar>(post[i].y, post[i].x * 3 + 0) = 0;
+			palette.at<uchar>(post[i].y, post[i].x * 3 + 1) = 255;
+			palette.at<uchar>(post[i].y, post[i].x * 3 + 2) = 0;
+		}
 	}
 
 	return palette;
@@ -2570,7 +2595,7 @@ std::vector<cv::Point> cVCO::get_t_vpts_arr()
 {
 	return m_t_vpt_arr;
 }
-std::vector<cv::Point> cVCO::get_tp1_vpts_arr_pp()
+std::vector<cv::Point> cVCO::get_tp1_vpts_arr()
 {
 	return m_tp1_vpt_arr;
 }

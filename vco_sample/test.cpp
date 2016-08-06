@@ -85,7 +85,7 @@ int main()
 			}
 			cv::Mat seq_bimg_t;
 
-			for (int k = start_frame+2; k < end_frame - 1; k++)
+			for (int k = start_frame+7; k < end_frame - 1; k++)
 			{
 				// check running time
 				clock_t start_time = clock();
@@ -162,11 +162,11 @@ int main()
 				std::vector<std::vector<cv::Point>> tp1_vsegm_vpt_2darr_pp = vco.getVsegVpts2dArr_pp();
 
 				// get to the selected as uniform term point
-				// get_t_vpts_arr() function is returned pre-post processing points
-				// get_t_vpts_arr() function is returned post-post processing points
+				// get_t_vpts_arr() function is returned points to get to the selecte for uniform of t frame
+				// get_tp1_vpts_arr() function is returned points to get to the selecte for uniform of tp1 frame
 				std::vector<cv::Point> t_vpt_arr = vco.get_t_vpts_arr();
-				std::vector<cv::Point> tp1_vpt_arr = vco.get_t_vpts_arr();
-
+				std::vector<cv::Point> tp1_vpt_arr = vco.get_tp1_vpts_arr();
+				
 				// get to the displacement vector. this is based selected as uniform term point
 				std::vector<cv::Point> disp_vec_arr = vco.get_disp_vec_arr();
 
@@ -190,6 +190,8 @@ int main()
 
 				// release
 				delete[] tp1_p_vmask, tp1_p_vmask_pp;
+				delete[] tp_p_vmask_8u, tp_p_vmask_pp_8u;
+				
 			}
 
 			for (int p1 = 0; p1 < end_frame - start_frame + 1; p1++)

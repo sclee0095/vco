@@ -198,7 +198,8 @@ public:
 		//OUTPUTS
 		std::vector<std::vector<cv::Point>> *newE, 
 		std::vector<cv::Point> *all_v, 
-		std::vector<cv::Point> *all_vessel_pt
+		std::vector<cv::Point> *all_vessel_pt,
+		std::vector<cv::Point> *tp1_vpts
 		);
 
 
@@ -309,7 +310,7 @@ public:
 	std::vector<cv::Point> get_t_vpts_arr();
 
 	// get to points that it is seleteced as uniform term of post-post processing
-	std::vector<cv::Point> get_tp1_vpts_arr_pp();
+	std::vector<cv::Point> get_tp1_vpts_arr();
 
 	// get to displacement vector to subtract tp1 frame points to t frame points
 	std::vector<cv::Point> get_disp_vec_arr();
@@ -358,13 +359,13 @@ public:
 	std::vector<std::vector<cv::Point>> m_tp1_vsegm_vpt_2darr_pp;// stored each segmentes of post to post processing
 
 	// vessel motion estimation, (displacement vectors for vessel centerline points), cv::Point2f array
-	std::vector<cv::Point> m_t_vpt_arr;// candidates from t frame
-	std::vector<cv::Point> m_tp1_vpt_arr;// candidates from tp1 frame
-	std::vector<cv::Point> m_disp_vec_arr;// displacemente vector to subtract tp1 frame candidates vetors to t frame candidates vectors
+	std::vector<cv::Point> m_t_vpt_arr;// selected points to get uniform from t frame
+	std::vector<cv::Point> m_tp1_vpt_arr;// selected points to get uniform from tp1 frame. if point x and y are over 1000, it is selected to dummy label 
+	std::vector<cv::Point> m_disp_vec_arr;// displacemente vector to subtract tp1 frame that selected points vetors as t frame that selected points. if point x and y are over 1000, it is selected to dummy label 
 
 	// vessel feature points for frame t+1, cv::Point array
 	std::vector<ves_feat_info> m_t_feat_pts;
-	std::vector<ves_feat_info> m_tp1_feat_pts;
+	std::vector<ves_feat_info> m_tp1_feat_pts; 
 
 	// *** TODO *** //
 	// vessel segmentation mask (512x512, pixelwise labels)
