@@ -22,7 +22,7 @@ typedef std::wstring str_t;
 // read in folder
 std::vector<std::string> get_file_in_folder(std::string folder, std::string file_type = "*.*");
 
-bool bVerbose = false;
+bool bVerbose = true;
 int main()
 {
 	
@@ -85,7 +85,7 @@ int main()
 			}
 			cv::Mat seq_bimg_t;
 
-			for (int k = start_frame+7; k < end_frame - 1; k++)
+			for (int k = start_frame; k < end_frame - 1; k++)
 			{
 				// check running time
 				clock_t start_time = clock();
@@ -181,7 +181,7 @@ int main()
 				// for visualiazation using opencv library
 				cv::imshow("tp1_vmask", tp1_vmask);
 				cv::imshow("tp1_vmask_pp", tp1_vmask_pp);
-				cv::waitKey();
+				cv::waitKey(10);
 
 				// check running time
 				clock_t end_time = clock();
