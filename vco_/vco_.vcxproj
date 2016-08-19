@@ -70,7 +70,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>..\opencv_ectracted_lib2\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)\bin\</OutDir>
-    <TargetName>vcod</TargetName>
+    <TargetName>vco64d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -82,13 +82,13 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>..\opencv_ectracted_lib2\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)\bin\</OutDir>
-    <TargetName>vco</TargetName>
+    <TargetName>vco64</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>..\opencv_ectracted_lib2\include;$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)\bin\</OutDir>
     <TargetName>vco64</TargetName>
+    <OutDir>$(SolutionDir)\bin\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

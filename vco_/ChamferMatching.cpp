@@ -76,9 +76,10 @@ cv::Mat cChamferMatching::computeChamferMatch(cv::Mat bimg_t, cv::Mat bimg_tp1,c
 	cv::Mat cand(nY, nX,CV_8UC1);
 	cand = 0;
 
-	crop = cv::Rect(std::max(1, cpt_yy - p.thre_dist_step1), std::max(1, cpt_xx - p.thre_dist_step1),
+	/*crop = cv::Rect(std::max(1, cpt_yy - p.thre_dist_step1), std::max(1, cpt_xx - p.thre_dist_step1),
 		std::min(nY, cpt_yy + p.thre_dist_step1) - std::max(1, cpt_yy - p.thre_dist_step1),
-		std::min(nX, cpt_xx + p.thre_dist_step1) - std::max(1, cpt_xx - p.thre_dist_step1));
+		std::min(nX, cpt_xx + p.thre_dist_step1) - std::max(1, cpt_xx - p.thre_dist_step1));*/
+	crop = cv::Rect(0, 0, nX, nY);
 	//cand(std::max(1, cpt_yy - p.thre_dist_step1) :std::min(nY, cpt_yy + p.thre_dist_step1), std::max(1, cpt_xx - p.thre_dist_step1) : std::min(nX, cpt_xx + p.thre_dist_step1)) = true;
 	cv::Mat roi = cand(crop);
 	roi = 255;
@@ -121,7 +122,7 @@ cv::Mat cChamferMatching::computeChamferMatch(cv::Mat bimg_t, cv::Mat bimg_tp1,c
 		idx.at<cv::Point>(i, 0).x += t_x;
 		idx.at<cv::Point>(i, 0).y += t_y;
 
-		if (idx.at<cv::Point>(i, 0).x >= 0 && idx.at<cv::Point>(i, 0).y >= 0 && idx.at<cv::Point>(i, 0).x < nX && idx.at<cv::Point>(i, 0).y < nY)
+		if (idx.at<cv::Point>(i, 0).x >= 12 && idx.at<cv::Point>(i, 0).y >= 12 && idx.at<cv::Point>(i, 0).x < nX -12&& idx.at<cv::Point>(i, 0).y < nY-12)
 			gt_bimg_t.at<uchar>(idx.at<cv::Point>(i, 0).y, idx.at<cv::Point>(i, 0).x) = 255;
 	}
 	idx.release();

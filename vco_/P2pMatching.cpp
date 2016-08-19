@@ -33,12 +33,17 @@ void cP2pMatching::run(cv::Mat img_t, cv::Mat img_tp1, cv::Mat gt_bimg_t,
 	std::vector<std::vector<cv::Point>> E;
 	cv::Mat bJ, mapMat;
 	
+
 	MakeGraphFromImage(gt_bimg_t, J, end, bJ, E, mapMat);
 	float *d_tp1 = 0;
 	int numKeyPts;
 
-	cv::Mat crop;
-	numKeyPts = (nY - 2 * halfPatchSize)*(nX - 2 * halfPatchSize)/4;
+	cv::Mat excludedBoundary(nY, nX, CV_8UC1);
+	excludedBoundary = 255;
+
+	int inc = 2;
+
+	numKeyPts = (nY - 2 * halfPatchSize)*(nX - 2 * halfPatchSize) / (inc*inc);
 
 	cv::Mat d_tp1_img;
 	d_tp1_img = cv::Mat(patchSize*patchSize,numKeyPts, CV_8UC1);
@@ -51,31 +56,21 @@ void cP2pMatching::run(cv::Mat img_t, cv::Mat img_tp1, cv::Mat gt_bimg_t,
 	cv::Mat idx_img_tp1(nY, nX, CV_32SC1);
 	idx_img_tp1 = -1;
 
+	cv::Mat gaussSmooth;
+	cv::GaussianBlur(img_tp1, gaussSmooth, cv::Size(3, 3), std::sqrt(p.psift_scale*p.psift_scale - 0.25));
+
+
 	int cnt = 0;
-	for (int y = halfPatchSize; y < nY - halfPatchSize; y+=2)
-	for (int x = halfPatchSize; x < nX - halfPatchSize; x+=2)
+	for (int y = halfPatchSize; y < nY - halfPatchSize; y += inc)
+	for (int x = halfPatchSize; x < nX - halfPatchSize; x += inc)
 	{
 
 		cv::Rect rc(x - halfPatchSize, y - halfPatchSize, patchSize, patchSize);
-		crop = img_tp1(rc);
+		cv::Mat crop = gaussSmooth(rc);
 
-		/*f_tp1[(y - halfPatchSize)*(nX - 2 * halfPatchSize) + (x - halfPatchSize) * 3 + 0] = x;
-		f_tp1[(y - halfPatchSize)*(nX - 2 * halfPatchSize) + (x - halfPatchSize) * 3 + 1] = y;
-		f_tp1[(y - halfPatchSize)*(nX - 2 * halfPatchSize) + (x - halfPatchSize) * 3 + 2] = 0;*/
-
-		//f_tp1[cnt * 3 + 0] = (x);
-		//f_tp1[cnt * 3 + 1] = (y);
-		//f_tp1[cnt * 3 + 2] = (0);
 
 		idx_img_tp1.at<int>(y, x) = cnt;
 
-
-		//for (int i = 0; i < patchSize*patchSize; i++)
-		//{
-		//	//d_tp1[(y - halfPatchSize)*(nX - 2 * halfPatchSize) + x - halfPatchSize + i] = crop.at<uchar>(i);
-		//	//tmp_d_tp1.push_back(crop.at<uchar>(i));
-		//	d_tp1[patchSize*patchSize*cnt + i] = crop.at<uchar>(i);
-		//}
 
 		for (int i = 0; i < patchSize*patchSize; i++)
 		{
@@ -713,7 +708,7 @@ void cP2pMatching::MakeGraphFromImage(cv::Mat bimg, std::vector<cv::Point> &J, s
 
 	//PixelIdxList.clear();
 	//PixelIdxList.assign(numCC,std::vector<cv::Point>);
-	PixelIdxList = std::vector<std::vector<cv::Point>>::vector(numE);
+	PixelIdxList = std::vector<std::vector<cv::Point>>();
 	for (int j = 1; j < numCC + 1; j++)
 	{
 		cv::Mat cur_label_img = (CC == j);
@@ -722,7 +717,7 @@ void cP2pMatching::MakeGraphFromImage(cv::Mat bimg, std::vector<cv::Point> &J, s
 
 		cv::findNonZero(cur_label_img, cur_label);
 
-		PixelIdxList[j - 1] = (cur_label);
+		PixelIdxList.push_back(cur_label);
 	}
 
 	for (int j = 0; j < numCC; j++)
@@ -1231,8 +1226,11 @@ void cP2pMatching::MakeGraphFromImage(cv::Mat bimg, std::vector<cv::Point> &J, s
 					break;
 				}
 				//curY = nextY; curX = nextX;
+
+
 				curXY = nextXY[0];
 				timg.at<uchar>(curXY) = 0;
+				
 
 				std::vector<cv::Point>::iterator it;
 

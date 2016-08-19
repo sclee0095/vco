@@ -21,9 +21,28 @@
 #define VCO_DLL __declspec(dllimport)
 #endif
 
+// ** structure **//
+// vessel feature point 
+// type = information of end or juntion point
+struct VCO_DLL ves_feat_pt
+{
+	int x;
+	int y;
+	int type; // 0 is end feature point, 1 is junction feature point
+};
+
 class VCO_DLL cVCO
 {
-public:
+	// ***** USER CALLABLE FUNCTIONS ***** //
+public: 
+	// *** TO RUN VCO: 
+	//	1. USING CONSTRUCTOR
+	//		- input frame t + vessel centerline of frame t, and frame t+1, frame index, frame size (width + height)
+	//		- set options
+	//	2. RUN FUNCTION VesselCorrespondenceOptimization()
+	//		- GENERATED OUTPUTS: refer to line VCO OUTPUTS in MEMBER VARIABLES
+	//  3. GET OUTPUT OF INTEREST USING GET FUNCTIONS
+// CONSTRUCTOR & DESTRUCTOR
 	cVCO(
 		// frame t
 		double* frm_t,
@@ -38,34 +57,140 @@ public:
 		// options
 		bool bVer = false, char *spath = NULL);
 	~cVCO();
+// MAIN VCO FUNCTION
+	void VesselCorrespondenceOptimization();
 
-	// ** structure **//
-	// int form vessel point
-	struct ves_vec2i
-	{
-		int x;
-		int y;
-	};
+// GET FUNCTIONS FOR OUTPUTS
 
-	// float form vessel point
-	struct ves_vec2f
-	{
-		float x;
-		float y;
+	// coded by kjNoh (20160809)
+	// * Frangi filtered vesselness mask for frame t+1
+	// return cv::Mat form
+	cv::Mat get_tp1_FrangiVesselnessMask();
+	// return float pointer array form
+	float* get_tp1_p_FrangiVesselnessMask();
 
-	};
+	// coded by kjNoh (20160809)
+	// get cv::Mat mask form of vessel centerline, after post processing
+	cv::Mat get_tp1_vescl_mask();
+	// get cv::Mat mask form of vessel centerline, before post processing
+	cv::Mat get_tp1_vescl_mask_pp();
+	// get unsigned char pointer mask form of vessel centerline, after post processing
+	unsigned char* get_p_tp1_mask_8u();
+	// get unsigned char pointer mask form of vessel centerline, before post processing
+	unsigned char* get_p_tp1_mask_pp_8u();
+
+	cv::Mat get_tp1_adjusted_vescl_mask_pp();
+
+	// coded by kjNoh (20160809)
+	// get feature points
+	std::vector<ves_feat_pt> get_t_VesFeatPts();
+	std::vector<ves_feat_pt> get_tp1_VesFeatPts();
+
+	// coded by kjNoh (20160809)
+	// find feature points for corresponding points of t frame
+	std::vector<ves_feat_pt> find_tp1_features(std::vector<ves_feat_pt>  t_features, 
+		std::vector<std::vector<cv::Point>> t_seg_vec,
+		std::vector<std::vector<cv::Point>> tp1_seg_vec);
+	std::vector<ves_feat_pt> find_tp1_features(std::vector<ves_feat_pt> t_features,
+		std::vector<cv::Point> t_vseg,
+		std::vector<cv::Point> tp1_vseg);
+
+	// coded by kjNoh (20160809)
+	// set feature points to our structure form
+	std::vector<ves_feat_pt> setVesFeatPts(
+		// INPUTS
+		std::vector<cv::Point> junction, 
+		std::vector<cv::Point> end,
+		cv::Point tans
+		);
+
+	// coded by kjNoh (20160809)
+	// get vessel segment vector points 2d array of pre-post processing
+	std::vector<std::vector<cv::Point>> getVsegVpts2dArr();
+	// get vessel segment vector points 2d array of post-post processing
+	std::vector<std::vector<cv::Point>> getVsegVpts2dArr_pp();
+
+	// coded by kjNoh (20160809)
+	// get points that are seleteced as uniform term of pre-post processing
+	std::vector<cv::Point> get_t_vpts_arr();
+	// get points that are seleteced as uniform term of post-post processing
+	std::vector<cv::Point> get_tp1_vpts_arr();
+	// get displacement vector to subtract tp1 frame points to t frame points
+	std::vector<cv::Point> get_disp_vec_arr();
+	// draw displacement vector
+	cv::Mat drawDisplacementeVec(cv::Mat img, std::vector<cv::Point> pre, std::vector<cv::Point> post, std::vector<cv::Point> dispVec);
+
+	// coded by khNoh (20160814)
+	// get information to linked each segmentation at after post processed t+1 frame
+	// note : this is not tree. Just linked information to relationship at each segmentation
+	std::vector<std::vector<std::vector<std::vector<int>>>> get_tp1_segm_linked_information();
+
+	// *** 
+
+	// *********** END FUNCTIONS RELATED TO VCO ALGORITHM *********** //
+
+// MEMBER VARIABLES
+// VCO INPUTS
+	// frame t
+	double* arr_img_t;
+	// frame t - vessel centerline 
+	double* arr_bimg_t;
+	// frame t+1
+	double* arr_img_tp1;
+	// array index of frame t+1
+	int fidx_tp1;
+	// frame configuration: width and height
+	int img_w, img_h;
+	
+	// parameters
+	cVCOParams params;
+	bool bVerbose;
+	char* savePath;
+
+// VCO OUTPUTS
+	// Frangi filter results for frame t+1. 512x512, pixelwise float
+	cv::Mat m_frangi_vesselness_tp1;
+	float* m_p_frangi_vesselness_tp1;
+
+	// vessel centerlines for frame t+1, in 2D array form, of [cv::Point]s, point coordinates are integers
+	//  dim 1: vessel segments = vessel points between nodes (=feature points=end points+junctions)
+	//	dim 2: vessel point coordinate array within each segment
+	// * post processing = extension of vessel centerlines corresponding to contrast agent influx
+	std::vector<std::vector<cv::Point>> m_tp1_vsegm_vpt_2darr; // before post processing
+	std::vector<std::vector<cv::Point>> m_tp1_vsegm_vpt_2darr_pp; // after post processing
+
+	// subsampled vessel centerline points for frame t and t+1, in 1D array form, of [cv::Point]s, point coordinates are integers
+	//  = points used in VCO, 
+	//	* no deliniation between points from different vessel segments, for easy input to MRF optimizer
+	// uniformly subsampled points from frame t centerline
+	std::vector<cv::Point> m_t_vpt_arr;
+	// points corresponding to m_t_vpt_arr in frame t+1, 
+	// * if point x and y are over 1000, no corresponding point (=dummy label) * //
+	std::vector<cv::Point> m_tp1_vpt_arr;
+	// vessel motion estimation = displacement vectors = m_tp1_vpt_arr - m_t_vpt_arr
+	// * if point x and y are over 1000, no estimated motion (=dummy label) * //
+	std::vector<cv::Point> m_disp_vec_arr;
+
+	// vessel feature points for frame t+1, cv::Point array
+	// * feature points = vessel segment end points + vessel junctions
+	std::vector<ves_feat_pt> m_t_feat_pts;
+	std::vector<ves_feat_pt> m_tp1_feat_pts; 
+
+	// coded by khNoh (20160814)
+	// information to linked each segmentation at after post processed t+1 frame
+	std::vector<std::vector<std::vector<std::vector<int>>>> m_tp1_vsegm_linked_information;
+	// boundary range is between end boundary and term of boundary range 
+	int boundaryRange;
+
+	// *** TODO *** //
+	// vessel segmentation mask (512x512, pixelwise labels)
+
+	// vessel pixel orientation, boundary
+// VCO OUTPUTS
 
 
-	// information for vessel feature point
-	// type is information of end or juntion point
-	struct ves_feat_info
-	{
-		int x;
-		int y;
-		int type; // 0 is end feature point, 1 is junction feature point
-	};
-
-// MEMBER FUNCTIONS
+private:
+	// MEMBER FUNCTIONS
 	// *********** RELATED TO MRF OPTIMIZATION *********** //
 	//	% coded by syshin in MATLAB (160130) 
 	//  % converted to C++ by kjNoh (160600)
@@ -124,35 +249,28 @@ public:
 		cv::Mat &mapMat);
 	// *** compute truncted pairwise cost for specific node pair *** //
 	void GetTruncatedPairwiseCost(
-	// INPUTs
-		cv::Point coor1, cv::Point coor2, 
-		cv::Mat cands1, cv::Mat cands2, 
-		int dummy_pairwise_cost1, int dummy_pairwise_cost2, 
-	// OUTPUTs
+		// INPUTs
+		cv::Point coor1, cv::Point coor2,
+		cv::Mat cands1, cv::Mat cands2,
+		int dummy_pairwise_cost1, int dummy_pairwise_cost2,
+		// OUTPUTs
 		cv::Mat *o_mapMat);
 
 	// convert correspondence mapping matrix mapMat into sparse mapMat
-	void GetSparseCorrespondenceMapMatrix(cv::Mat &mapMat, 
+	void GetSparseCorrespondenceMapMatrix(cv::Mat &mapMat,
 		double **s_mapMat, int &nm);
 	// convert pairwise cost to array pairwise cost
 	void GetArrayPairwiseCost(std::vector<cv::Mat> &pairwiseCost, double ***arrayPairwiseCost);
 	// call trw-s function in library to run optimization
 	void mrf_trw_s(double *u, int uw, int uh, double **p, double* m, int nm, int mw, int mh, /*int in_Method, int in_iter_max, int in_min_iter,*/
 		double *e, double **s);
-	//void GetIntervalCost();
-	//void unique(cv::Mat inputMat, std::vector<cv::Point> *o_uniqueSotrtPts, std::vector<int> *o_uniqueSotrtIdx);
 	// *********** END FUNCTIONS RELATED TO MRF OPTIMIZATION *********** //
 
 
 	// *********** FUNCTIONS RELATED TO VCO ALGORITHM *********** //
-	//VCO_EXPORTS void VesselCorrespondenceOptimization(cv::Mat img_t, cv::Mat img_tp1, cv::Mat bimg_t,
-	//	cVCOParams p, std::string ave_path, int nextNum,
-	//	cv::Mat* bimg_tp1, cv::Mat* bimg_tp1_post_processed, int fidx_tp1, char* savePath)
-	void VesselCorrespondenceOptimization(
-		/*double** arr_bimg_tp1, double** arr_bimg_tp1_post_processed, cv::Mat* tp1_postProc, cv::Mat* tp1_nonPostProc*/);
 	// global chamfer matching of frame t vessel centerlines to that of frame t+1
 	void globalChamferMatching(
-	// INPUTS
+		// INPUTS
 		// t_th frame binary centerline mask, 
 		cv::Mat &bimg_t,
 		// t+1_th frame
@@ -160,8 +278,8 @@ public:
 		// t+1_th frame binary centerline mask (estimated)
 		cv::Mat &bimg_tp1,
 		// options
-		bool b_use_gc, bool bVerbose, 	
-	// OUTPUTS
+		bool b_use_gc, bool bVerbose,
+		// OUTPUTS
 		// matched vessel centerlines
 		cv::Mat &gt_bimg_t,
 		// displacement vector 
@@ -184,199 +302,85 @@ public:
 		std::vector<std::vector<int>> &v_segm_to_all_coors
 		);
 
-
-	void mkNewPath(
+	// *** construct connected centerline path by reconnecting subsampled correspondence points
+	void MakeConnectedCenterlineFromSubsampledPts(
 		// INPUTS
-		cv::Mat m_frangi_vesselness_tp1, 
-		std::vector<std::vector<int>> v_segm_to_all_coors, 
+		cv::Mat m_frangi_vesselness_tp1,
+		std::vector<std::vector<int>> v_segm_to_all_coors,
 		cv::Mat all_cands,
-		std::vector<std::vector<int>> all_joining_seg, 
-		double* labels, 
-		int ves_segm_num, 
+		std::vector<std::vector<int>> all_joining_seg,
+		double* labels,
+		int ves_segm_num,
 		int num_all_joining_seg,
 
 		//OUTPUTS
-		std::vector<std::vector<cv::Point>> *newE, 
-		std::vector<cv::Point> *all_v, 
+		std::vector<std::vector<cv::Point>> *newE,
+		std::vector<cv::Point> *all_v,
 		std::vector<cv::Point> *all_vessel_pt,
-		std::vector<cv::Point> *tp1_vpts
+		std::vector<cv::Point> *tp1_vpts_all_subsample, 
+		std::vector<std::vector<cv::Point>> *tp1_vpts_seg_subsample
 		);
 
+	// ** POST PROCESSING FUNCTIONS ** //
 
-	//function[new_bimg, new_lidx, app_lidx] = GrowVesselUsingFastMarching(ivessel, lidx, thre)
-	//% input
-	//%
-	//% ivessel : vesselness
-	//% lidx : linear indices for vessels
-	//% thre : threshold for 'ivessel', default 0.05
-	//%
-	//% output
-	//%
-	//% new_bimg : binary mask for a new vessel
-	//% new_lidx : linear indices for a new vessels
-	//% app_lidx : linear indices of appened parts
-	//%
-	//% coded by syshin(160305)
-	cv::Mat postProcGrowVessel(cv::Mat img_tp1, cv::Mat m_frangi_vesselness_tp1, std::vector<cv::Point> all_vessel_pt,
-		cVCOParams params, std::vector<std::vector<cv::Point>> *E);
-	void GrowVesselUsingFastMarching(cv::Mat ivessel, std::vector<cv::Point> lidx, double thre, cVCOParams p,
-		cv::Mat *o_new_bimg, std::vector<cv::Point> *o_new_lidx, std::vector<cv::Point> *o_app_lidx);
-	
-	void getBoundaryDistance(cv::Mat I, bool IS3D, cv::Mat *o_BoundaryDistance);
-	void maxDistancePoint(cv::Mat BoundaryDistance, cv::Mat I, bool IS3D, cv::Point *o_posD, double *o_maxD);
-	void GetLineLength(std::vector<cv::Point> L, bool IS3D, double *o_ll);
-	void cvt2Arr(
+	// coded by syshin in MATLAB (160130) 
+	// converted to C++ by kjNoh (160600)
+	// post processing main function //
+	// It can get center line mask to grown up or shrinked up 
+	// output is center line mask. cv::Mat form(512x512)
+	cv::Mat postProcGrowVessel(
+		//INPUTS
+		cv::Mat img_tp1, 
+		cv::Mat m_frangi_vesselness_tp1,
+		std::vector<cv::Point> all_vessel_pt,
+		cVCOParams params,
+		// INPUT AND OUTPUT
+		std::vector<std::vector<cv::Point>> *E
+		);
+
+	// converted to C++ by kjNoh (160800)
+	// generate new center line to grown using fastmarching method
+	void GrowVesselUsingFastMarching(
 		// INPUTS
-		cv::Mat draw_bimg_tp1, 
-		cv::Mat bimg_tp1_post_processed, 
-
-		// OUTPUTS
-		double **arr_tmp_bimg_tp1_nonPostproc, 
-		double **arr_tmp_bimg_tp1_post_processed);
-
-	
-	// get to mask to cv::Mat form of post-post processing
-	cv::Mat get_tp1_Mask();
-
-	// get to mask to cv::Mat form of pre-post processing
-	cv::Mat get_tp1_Mask_pp();
-
-	// get to mask to double array point form of pre-post processing
-	double* get_p_tp1_mask();
-	
-	// get to mask to double array point form of post-post processing
-	double* get_p_tp1_mask_pp();
-
-	// get to mask to unsigned char array point form of pre-post processing
-	unsigned char* get_p_tp1_mask_8u();
-
-	// get to mask to unsigned char array point form of post-post processing
-	unsigned char* get_p_tp1_mask_pp_8u();
-
-	// convert to all vectors form from segmente based vectors
-	std::vector<cv::Point> makeSegvec2Allvec(
-		//INPUT
-		std::vector<std::vector<cv::Point>> segVec);
-
-	std::vector<cv::Point> makeSegvec2Allvec(
-		//INPUT
-		std::vector<std::vector<cv::Point>> segVec,
-		cv::Point tanslation
+		cv::Mat ivessel, 
+		std::vector<cv::Point> lidx,
+		double thre, 
+		cVCOParams p,
+		cv::Mat *o_new_bimg, 
+		std::vector<cv::Point> *o_new_lidx, 
+		std::vector<cv::Point> *o_app_lidx
 		);
+	// compute distance from boundary to seed points
+	void getBoundaryDistance(cv::Mat I, bool IS3D, cv::Mat *o_BoundaryDistance);
+	// get max distance point in boundary distance map
+	void maxDistancePoint(cv::Mat BoundaryDistance, cv::Mat I, bool IS3D, cv::Point *o_posD, double *o_maxD);
+	// compute length of input line(std::vector<cv::Point> L)
+	void GetLineLength(std::vector<cv::Point> L, bool IS3D, double *o_ll);
 
+	// ** END POST PROCESSING FUNCTIONS ** //
+
+	// coded by kjNoh (160809)
 	// convert to all vectors form from cv::Mat based form
 	std::vector<cv::Point> makeSegvec2Allvec(
-		//INPUT
-		cv::Mat allMat);
-
+		std::vector<std::vector<cv::Point>> segVec
+		);
+	std::vector<cv::Point> makeSegvec2Allvec(
+		//INPUTS
+		std::vector<std::vector<cv::Point>> segVec, 
+		cv::Point tanslation);
 	// make displacemente vectors
 	std::vector<cv::Point> makeDisplacementVec(
 		// INPUTS
-		std::vector<cv::Point> pre, 
+		std::vector<cv::Point> pre,
 		std::vector<cv::Point> post
 		);
 
-	cv::Mat drawDisplacementeVec(cv::Mat img, std::vector<cv::Point> pre, std::vector<cv::Point> post, std::vector<cv::Point> dispVec);
-
-	std::vector<std::vector<cv::Point>> eraseRepeatSegPts(std::vector<std::vector<cv::Point>> segVec,int nX, int nY);
-
-	// get to feature points
-	std::vector<ves_feat_info> get_t_VesFeatPts();
-	std::vector<cVCO::ves_feat_info> get_tp1_VesFeatPts();
-
-	std::vector<cVCO::ves_feat_info> find_tp1_features(std::vector<cVCO::ves_feat_info>  t_features, 
-		std::vector<std::vector<cv::Point>> t_seg_vec,
-		std::vector<std::vector<cv::Point>> tp1_seg_vec);
-
-	std::vector<cVCO::ves_feat_info> find_tp1_features(std::vector<cVCO::ves_feat_info> t_features,
-		std::vector<cv::Point> t_vseg,
-		std::vector<cv::Point> tp1_vseg);
-
-	// set to feature points to our structure form
-	std::vector<cVCO::ves_feat_info> setVesFeatPts(
-		// INPUTS
-		std::vector<cv::Point> junction, 
-		std::vector<cv::Point> end,
-		cv::Point tans
+	// coded by kjNoh (160814)
+	// make information of linking relation at each segmentation
+	std::vector<std::vector<std::vector<std::vector<int>>>>  linkedSeg(
+		//INPUT
+		std::vector<std::vector<cv::Point>> seg
 		);
-
-	// get to vessel segment vector points 2d array of pre-post processing
-	std::vector<std::vector<cv::Point>> getVsegVpts2dArr();
-
-	// get to vessel segment vector points 2d array of post-post processing
-	std::vector<std::vector<cv::Point>> getVsegVpts2dArr_pp();
-
-	// get to points that it is seleteced as uniform term of pre-post processing
-	std::vector<cv::Point> get_t_vpts_arr();
-
-	// get to points that it is seleteced as uniform term of post-post processing
-	std::vector<cv::Point> get_tp1_vpts_arr();
-
-	// get to displacement vector to subtract tp1 frame points to t frame points
-	std::vector<cv::Point> get_disp_vec_arr();
-
-
-	// get to tp1 frame frangi filtered vesselness mask
-	// get_tp1_FrangiVesselnessMask() function is returend cv::Mat form
-	// get_tp1_p_FrangiVesselnessMask() function is retuned float pointer array form
-	cv::Mat get_tp1_FrangiVesselnessMask();
-	float* get_tp1_p_FrangiVesselnessMask();
-	
-
-	// *********** END FUNCTIONS RELATED TO VCO ALGORITHM *********** //
-
-// MEMBER VARIABLES
-// INPUTS
-	// frame t
-	double* arr_img_t;
-	// frame t - vessel centerline 
-	double* arr_bimg_t;
-	// frame t+1
-	double* arr_img_tp1;
-	// array index of frame t+1
-	int fidx_tp1;
-	// frame configuration: width and height
-	int img_w, img_h;
-	
-	// parameters
-	cVCOParams params;
-	bool bVerbose;
-	char* savePath;
-
-// OUTPUTS
-	// Frangi filter results for frame t+1. 512x512, pixelwise float
-	cv::Mat m_frangi_vesselness_tp1;
-	float* m_p_frangi_vesselness_tp1;
-
-	// vessel centerlines for frame t+1, in mask form, 512x512
-	//cv::Mat m_tp1_vmask; // result of mask form to calculate post processing
-	//cv::Mat m_tp1_vmask_pp; // result of mask form to previous post processing
-	double *m_p_tp1_vmask; // result of array form to previous psot processing
-	double *m_p_tp1_vmask_pp; // result of array form to calculate psot processing
-
-	// vessel centerlines for frame t+1, in array form, of cv::Point s, int
-	std::vector<std::vector<cv::Point>> m_tp1_vsegm_vpt_2darr; // stored each segmentes of previous to post processing
-	std::vector<std::vector<cv::Point>> m_tp1_vsegm_vpt_2darr_pp;// stored each segmentes of post to post processing
-
-	// vessel motion estimation, (displacement vectors for vessel centerline points), cv::Point2f array
-	std::vector<cv::Point> m_t_vpt_arr;// selected points to get uniform from t frame
-	std::vector<cv::Point> m_tp1_vpt_arr;// selected points to get uniform from tp1 frame. if point x and y are over 1000, it is selected to dummy label 
-	std::vector<cv::Point> m_disp_vec_arr;// displacemente vector to subtract tp1 frame that selected points vetors as t frame that selected points. if point x and y are over 1000, it is selected to dummy label 
-
-	// vessel feature points for frame t+1, cv::Point array
-	std::vector<ves_feat_info> m_t_feat_pts;
-	std::vector<ves_feat_info> m_tp1_feat_pts; 
-
-	// *** TODO *** //
-	// vessel segmentation mask (512x512, pixelwise labels)
-
-	// vessel pixel orientation, boundary
-
-
-
-
-	
-
-	
+	// ***** END OF INTERNAL FUNCTIONS ***** //
 };
 
